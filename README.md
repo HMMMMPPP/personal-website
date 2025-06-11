@@ -2,7 +2,6 @@
 
 Welcome to the repository for my personal website! Instead of a traditional 2D site, I'm building an immersive and interactive 3D experience where you can explore my work and learn more about me.
 
-**[Live Demo Link Here]** (Add your deployment link when it's live!)
 
 ---
 
@@ -79,5 +78,7 @@ Here are some of the features and improvements I have planned for the future:
 ---
 
 ## 📄 License
+
+MIT License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
