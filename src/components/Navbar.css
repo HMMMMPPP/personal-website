@@ -1,0 +1,30 @@
+.navbar {
+  /* Existing styles */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(0);
+  z-index: 1000;
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
+}
+
+/* Add this to prevent content jump */
+body {
+  scroll-padding-top: 60px; /* Navbar height */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    min-height: 80px; /* Adjust for mobile */
+  }
+  
+  body {
+    scroll-padding-top: 80px; /* Mobile navbar height */
+  }
+}
