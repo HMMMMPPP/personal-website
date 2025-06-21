@@ -46,7 +46,7 @@ const IdleSection = React.forwardRef((props, ref) => (
       }}
     >
       <img
-        src="./public/ID picture.png"
+        src="./ID picture.png"
         alt="Avatar"
         style={{
           width: 78,

@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;700&display=swap');
+
+.countdown-root {
+    min-height: 100vh;
+    min-width: 100vw;
+    background: #16192b;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.starfield {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    background: #e6f6ff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px #7df9ff88, 0 0 32px 8px #7df9ff22;
+    opacity: 0.7;
+    animation: twinkle 4s infinite;
+}
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    40% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+.countdown-content {
+    z-index: 1;
+    width: min(900px, 98vw);
+    margin: 0 auto;
+    text-align: center;
+    padding: 48px 0 0 0;
+}
+
+.vanguard-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.launch-sequence {
+    color: #4beaff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.22rem;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.04em;
+}
+
+.countdown-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2.5vw;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.countdown-unit {
+    background: rgba(40, 56, 80, 0.45);
+    border-radius: 12px;
+    padding: 32px 36px 24px 36px;
+    min-width: 200px;
+    box-shadow: 0 2px 24px 0 #000a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.countdown-value {
+    color: #29d7ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.4rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.0;
+}
+
+.countdown-label {
+    color: #e3eef7;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.13rem;
+    font-weight: 500;
+    margin-top: 0.8em;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.countdown-divider {
+    border: none;
+    border-top: 1px solid #2b3145;
+    margin: 36px 0 32px 0;
+    width: 100%;
+}
+
+.countdown-footer {
+    color: #7d8596;
+    font-size: 1rem;
+    margin-bottom: 0.35em;
+}
+
+.countdown-footer-sub {
+    color: #5c6370;
+    font-size: 0.9rem;
+    margin-top: 0.2em;
+    letter-spacing: 0.05em;
+}
+.mission-complete-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2.5rem 0 2rem 0;
+    padding: 2.5rem 1.5rem 2.5rem 1.5rem;
+    border-radius: 16px;
+    background: rgba(40, 56, 80, 0.20);
+    box-shadow: 0 2px 24px 0 #000a;
+}
+.mission-complete-heading {
+    font-size: 2.7rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    color: #29d7ff;
+    letter-spacing: 0.10em;
+    margin-bottom: .7em;
+    text-shadow: 0 0 15px #2ef4ff66;
+}
+.mission-complete-detail {
+    font-size: 1.23rem;
+    color: #e3eef7;
+    text-align: center;
+    line-height: 1.7;
+    font-family: 'Inter', sans-serif;
+}
