@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <nav className={`navbar ${isVisible ? '' : 'hidden'}`}>
-      <div className="logo">VIRTUAL  Porfolio</div>
+      <div className="logo">NORTH STAR</div>
       
       <ul className="nav-links">
         <li><a href="#idle">About</a></li>
