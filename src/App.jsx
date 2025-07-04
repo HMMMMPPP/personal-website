@@ -10,7 +10,11 @@ import DigitalFootprint from "./components/DigitalFootprint";
 import GalacticCommand from "./components/GalacticCommand";
 import ContactPanel from "./components/ContactPanel";
 import GalacticFooter from "./components/GalacticFooter";
+<<<<<<< HEAD
 import LoadingScreen from "./components/Loadingscreen"; 
+=======
+import LoadingScreen from "./components/LoadingScreen"; 
+>>>>>>> e0f7c88302857f9fe93b54a1a18e80756313c437
 
 const SECTIONS = [
   { id: "idle", label: "Salute", Component: IdleSection },

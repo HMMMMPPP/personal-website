@@ -54,7 +54,7 @@ const ContactPanel = () => {
         setStatus('TRANSMITTING...');
 
         try {
-            const response = await fetch('http://localhost:3001/api/contact', { // Your server URL
+            const response = await fetch('/api/contact', { // Your server URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

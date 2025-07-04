@@ -35,6 +35,9 @@
     "react-dom": "^19.1.0",
     "react-window": "^1.8.11",
     "three": "^0.178.0",
-    "tone": "^15.1.22"
+    "tone": "^15.1.22",
+    
+    "google-spreadsheet": "^4.1.1",     
+    "google-auth-library": "^9.11.0"  
   }
 }

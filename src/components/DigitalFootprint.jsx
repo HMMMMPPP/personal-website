@@ -263,7 +263,7 @@ export default function DigitalFootprint() {
   useEffect(() => {
     const fetchMissionData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/data');
+        const response = await fetch('/api/data');
         if (!response.ok)
           throw new Error(`Network response was not ok: ${response.statusText}`);
         const data = await response.json();
