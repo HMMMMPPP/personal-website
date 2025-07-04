@@ -10,8 +10,6 @@ import DigitalFootprint from "./components/DigitalFootprint";
 import GalacticCommand from "./components/GalacticCommand";
 import ContactPanel from "./components/ContactPanel";
 import GalacticFooter from "./components/GalacticFooter";
-
-// LOADING SCREEN: Import the new component
 import LoadingScreen from "./components/Loadingscreen"; 
 
 const SECTIONS = [
