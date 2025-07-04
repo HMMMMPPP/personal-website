@@ -1,147 +1,130 @@
+// functions/api-contact.js
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
-// --- CONFIGURATION ---
+// Retrieve these from Netlify Environment Variables
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
-const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
+const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
 
-// Helper to get contact data (can be reused)
+/**
+ * Helper function to get ContactUs data.
+ * Extracted from the original getSheetData but specific to ContactUs
+ */
 async function getContactUsData() {
-  const serviceAccountAuth = new JWT({
-    email: GOOGLE_CLIENT_EMAIL,
-    key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-  const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
-  await doc.loadInfo();
-  const contactusSheet = doc.sheetsByTitle['ContactUs'];
-  if (!contactusSheet) {
-    throw new Error("Sheet 'ContactUs' not found.");
-  }
-  const contactusRows = await contactusSheet.getRows();
-  return contactusRows.map(row => ({
-    name: row.get('name') || '',
-    email: row.get('email') || '',
-    message: row.get('message') || '',
-    timestamp: row.get('timestamp') || '', // Include timestamp if you add it
-  }));
+    if (!GOOGLE_SHEET_ID || !GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY) {
+        throw new Error("Missing Google Sheet credentials in environment variables.");
+    }
+
+    const serviceAccountAuth = new JWT({
+        email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        key: GOOGLE_PRIVATE_KEY,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
+    await doc.loadInfo();
+
+    const contactusSheet = doc.sheetsByTitle['ContactUs'];
+    if (!contactusSheet) {
+        throw new Error("Sheet 'ContactUs' not found.");
+    }
+    const contactusRows = await contactusSheet.getRows();
+    return contactusRows.map(row => ({
+        name: row.get('name') || '',
+        email: row.get('email') || '',
+        message: row.get('message') || '',
+        timestamp: row.get('timestamp') || '', // Assuming you'll add this column
+    }));
 }
 
 exports.handler = async (event, context) => {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*', // IMPORTANT: Adjust for production
-    'Access-Control-Allow-Headers': 'Content-Type', // Required for POST
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', // Allow preflight for POST
-  };
-
-  // Handle preflight OPTIONS request for POST
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: '', // No body needed for OPTIONS
+    // Set CORS headers for all responses
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*', // Allow requests from any origin
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
     };
-  }
 
-  // --- Handle GET request ---
-  if (event.httpMethod === 'GET') {
-    console.log(`[${new Date().toLocaleTimeString()}] Received GET request for /api/contact`);
-    try {
-      const contactusData = await getContactUsData();
-      console.log(`[${new Date().toLocaleTimeString()}] Successfully sent ContactUs data.`);
-      return {
-        statusCode: 200,
-        body: JSON.stringify(contactusData),
-        headers,
-      };
-    } catch (error) {
-      console.error('API Error on GET /api/contact:', error.message);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: error.message }),
-        headers,
-      };
-    }
-  }
-
-  // --- Handle POST request ---
-  if (event.httpMethod === 'POST') {
-    console.log(`[${new Date().toLocaleTimeString()}] Received POST request for /api/contact`);
-    let body;
-    try {
-      body = JSON.parse(event.body);
-    } catch (e) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid JSON body.' }),
-        headers,
-      };
-    }
-
-    const { name, email, message } = body;
-
-    if (!name || !email || !message) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Name, email, and message are required.' }),
-        headers,
-      };
+    // Handle preflight OPTIONS request
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: headers,
+            body: '',
+        };
     }
 
     try {
-      const serviceAccountAuth = new JWT({
-        email: GOOGLE_CLIENT_EMAIL,
-        key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
+        if (!GOOGLE_SHEET_ID || !GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY) {
+            throw new Error("Missing Google Sheet credentials in environment variables.");
+        }
 
-      const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
-      await doc.loadInfo();
+        if (event.httpMethod === 'POST') {
+            const { name, email, message } = JSON.parse(event.body);
 
-      const contactSheet = doc.sheetsByTitle['ContactUs'];
-      if (!contactSheet) {
-        throw new Error("Sheet 'ContactUs' not found.");
-      }
+            if (!name || !email || !message) {
+                return {
+                    statusCode: 400,
+                    headers: headers,
+                    body: JSON.stringify({ error: 'Name, email, and message are required.' })
+                };
+            }
 
-      const newRow = await contactSheet.addRow({
-        name: name,
-        email: email,
-        message: message,
-        timestamp: new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" }) // Add timestamp column in your sheet!
-      });
+            const serviceAccountAuth = new JWT({
+                email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+                key: GOOGLE_PRIVATE_KEY,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+            });
 
-      console.log(`[${new Date().toLocaleTimeString()}] Successfully added to ContactUs: ${name}`);
+            const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
+            await doc.loadInfo();
 
-      return {
-        statusCode: 201,
-        body: JSON.stringify({
-          success: true,
-          message: 'Message logged successfully.',
-          data: {
-            name: newRow.get('name'),
-            email: newRow.get('email'),
-            message: newRow.get('message'),
-          },
-        }),
-        headers,
-      };
+            const contactSheet = doc.sheetsByTitle['ContactUs'];
+            if (!contactSheet) {
+                throw new Error("Sheet 'ContactUs' not found.");
+            }
+
+            const newRow = await contactSheet.addRow({
+                name: name,
+                email: email,
+                message: message,
+                timestamp: new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" })
+            });
+
+            console.log(`Successfully added to ContactUs: ${name}`);
+
+            return {
+                statusCode: 201,
+                headers: headers,
+                body: JSON.stringify({
+                    success: true,
+                    message: 'Message logged successfully.',
+                    data: {
+                        name: newRow.get('name'),
+                        email: newRow.get('email'),
+                        message: newRow.get('message'),
+                    },
+                }),
+            };
+        } else if (event.httpMethod === 'GET') {
+            const contactusData = await getContactUsData();
+            return {
+                statusCode: 200,
+                headers: headers,
+                body: JSON.stringify(contactusData),
+            };
+        } else {
+            return { statusCode: 405, headers: headers, body: 'Method Not Allowed' };
+        }
 
     } catch (error) {
-      console.error('API Error on POST /api/contact:', error.message);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to write message to Google Sheet.' }),
-        headers,
-      };
+        console.error(`Netlify Function Error (/api/contact - ${event.httpMethod}):`, error);
+        return {
+            statusCode: 500,
+            headers: headers,
+            body: JSON.stringify({ error: error.message || 'Internal Server Error' }),
+        };
     }
-  }
-
-  // Fallback for unsupported methods
-  return {
-    statusCode: 405,
-    body: JSON.stringify({ error: 'Method Not Allowed' }),
-    headers,
-  };
 };

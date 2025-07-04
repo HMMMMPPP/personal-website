@@ -1,16 +1,14 @@
-# Main build settings
+# netlify.toml
 [build]
-  command = "npm run build"
-  publish = "dist" # IMPORTANT: Set this to the actual output directory of your frontend build (e.g., 'build', 'public', 'dist')
+  command = "npm run build" # Or whatever command builds your frontend
+  publish = "dist"          # Or whatever directory your built frontend goes into
 
-# Functions specific settings
 [functions]
-  directory = "netlify/functions" # This tells Netlify where to find your serverless functions
+  directory = "functions"   # This tells Netlify where to find your functions
+  node_bundler = "esbuild"  # Recommended for faster builds and smaller function sizes
 
-# Redirects and Rewrites
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
-  # force = true # You can remove this unless you have specific reasons for it.
-               # For proxying to functions, it's often not necessary.
+  force = true # Ensures this redirect takes precedence
