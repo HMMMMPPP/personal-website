@@ -21,7 +21,7 @@ node_modules/
 .env.*.local       # e.g., .env.development.local, .env.production.local
 
 # Google Service Account Credentials (YOUR ADDITION)
-google-credentials.json.json
+google-credentials.json
 
 # Editor directories and files
 .vscode/           # VS Code directory (ignore everything inside)
