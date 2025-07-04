@@ -6,22 +6,60 @@ import DanceSection from "./section/DanceSection";
 import ClapSection from "./section/ClapSection";
 import CountdownPanel from "./components/CountdownPanel";
 import Avatar from "./Avatar";
+import DigitalFootprint from "./components/DigitalFootprint";
+import GalacticCommand from "./components/GalacticCommand";
+import ContactPanel from "./components/ContactPanel";
+import GalacticFooter from "./components/GalacticFooter";
+
+// LOADING SCREEN: Import the new component
+import LoadingScreen from "./components/Loadingscreen"; 
 
 const SECTIONS = [
-  { id: "idle", label: "Idle", Component: IdleSection },
+  { id: "idle", label: "Salute", Component: IdleSection },
   { id: "wave", label: "Wave", Component: WaveSection },
-  { id: "dance", label: "Dance", Component: DanceSection },
-  { id: "clap", label: "Clap", Component: ClapSection },
+  { id: "dance", label: "Bored", Component: DanceSection },
+  { id: "clap", label: "Dance", Component: ClapSection },
 ];
 
 function App() {
+  // LOADING SCREEN: State for the loading sequence
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAnimationDone, setIsAnimationDone] = useState(false);
+
+  // Your existing state - no changes needed
   const [action, setAction] = useState("Idle");
   const [inSection, setInSection] = useState(false);
   const sectionRefs = useRef([]);
   const countdownRef = useRef(null);
-  const [showAvatar, setShowAvatar] = useState(false);
+  const footprintRef = useRef(null);
+  const [isAvatarVisible, setIsAvatarVisible] = useState(false);
+  const [isCountdownPassed, setIsCountdownPassed] = useState(false);
+  const [isFootprintVisible, setIsFootprintVisible] = useState(false);
 
-  // Observer for sections to determine if any section is in view and set the avatar action
+  // LOADING SCREEN: Effect to handle the loading timer and animation
+  useEffect(() => {
+    // This effect runs only once when the app mounts
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Trigger the fade-out of the loading screen
+    }, 3000); // Set how long the loading screen is visible (e.g., 3 seconds)
+
+    const animationTimer = setTimeout(() => {
+      setIsAnimationDone(true); // Completely remove the loading screen from the DOM
+    }, 3700); // This should be loading time + CSS animation duration (3000ms + 700ms)
+
+    // Cleanup function to prevent memory leaks
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(animationTimer);
+    };
+  }, []);
+
+
+  // All of your existing useEffect hooks for IntersectionObserver and navigation
+  // can remain exactly as they are. They will not run until the main content
+  // is rendered and the user starts interacting with the page.
+  
+  // Observer for main content sections... (NO CHANGES TO THIS USEEFFECT)
   useEffect(() => {
     const observers = [];
     sectionRefs.current = sectionRefs.current.slice(0, SECTIONS.length);
@@ -62,24 +100,42 @@ function App() {
     };
   }, []);
 
-  // Determine if countdown panel is in view
+  // useEffect for avatar visibility... (NO CHANGES TO THIS USEEFFECT)
   useEffect(() => {
-    function handleScroll() {
-      if (!countdownRef.current) return;
-      const rect = countdownRef.current.getBoundingClientRect();
-      // If the bottom of the countdown panel is above the top of the viewport, it's out of view
-      // If the bottom is below at least 1px of the viewport, it's in view
-      const countdownInView = rect.bottom > 1;
-      // Show avatar only if a section is in view and the countdown panel is NOT in view
-      setShowAvatar(inSection && !countdownInView);
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    // Call once on mount
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [inSection]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === countdownRef.current) {
+            setIsCountdownPassed(!entry.isIntersecting);
+          } else if (entry.target === footprintRef.current) {
+            setIsFootprintVisible(entry.isIntersecting);
+          }
+        });
+      },
+      {
+        rootMargin: "0px 0px -50px 0px",
+        threshold: 0,
+      }
+    );
 
-  // Handle nav clicks
+    const currentCountdownRef = countdownRef.current;
+    const currentFootprintRef = footprintRef.current;
+
+    if (currentCountdownRef) observer.observe(currentCountdownRef);
+    if (currentFootprintRef) observer.observe(currentFootprintRef);
+
+    return () => {
+      if (currentCountdownRef) observer.unobserve(currentCountdownRef);
+      if (currentFootprintRef) observer.unobserve(currentFootprintRef);
+    };
+  }, []);
+
+  // useEffect to combine states... (NO CHANGES TO THIS USEEFFECT)
+  useEffect(() => {
+    setIsAvatarVisible(inSection && isCountdownPassed && !isFootprintVisible);
+  }, [inSection, isCountdownPassed, isFootprintVisible]);
+
+  // useEffect for nav clicks... (NO CHANGES TO THIS USEEFFECT)
   useEffect(() => {
     const handleNavClick = (e) => {
       if (
@@ -101,22 +157,34 @@ function App() {
 
   return (
     <div className="app-root">
-      <Header />
-      <div ref={countdownRef}>
-        <CountdownPanel />
-      </div>
+      {/* LOADING SCREEN: Conditionally render the loading screen. */}
+      {/* It will be removed from the DOM completely after its animation is done. */}
+      {!isAnimationDone && <LoadingScreen isFading={!isLoading} />}
+
+      {/* Main App Wrapper: This will contain your entire existing app. */}
+      {/* We control its opacity to create a smooth fade-in effect after loading. */}
       <div
-        className="main-content"
+        className="main-app-content"
         style={{
-          display: "flex",
-          width: "100vw",
-          minHeight: "100vh",
-          boxSizing: "border-box",
-          marginTop: 0,
+          opacity: isLoading ? 0 : 1,
+          transition: "opacity 0.5s ease-in",
+          visibility: isLoading ? "hidden" : "visible",
         }}
       >
-        {/* Avatar is only rendered if a section is in view AND the countdown panel is not in view */}
-        {showAvatar && (
+        <Header />
+        <div ref={countdownRef}>
+          <CountdownPanel />
+        </div>
+        <div
+          className="main-content"
+          style={{
+            display: "flex",
+            width: "100vw",
+            minHeight: "100vh",
+            boxSizing: "border-box",
+            marginTop: 0,
+          }}
+        >
           <div
             className="left-column"
             style={{
@@ -124,37 +192,53 @@ function App() {
               height: "100vh",
               position: "fixed",
               left: 0,
-              top: 60,
+              top: 0,
               background: "#222",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               zIndex: 2,
+              transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
+              opacity: isAvatarVisible ? 1 : 0,
+              transform: isAvatarVisible ? "translateX(0)" : "translateX(-100%)",
+              pointerEvents: isAvatarVisible ? "auto" : "none",
             }}
           >
             <Avatar action={action} />
           </div>
-        )}
-        <div
-          className="right-column"
-          style={{
-            marginLeft: showAvatar ? "30vw" : 0,
-            width: showAvatar ? "70vw" : "100vw",
-            padding: "2em",
-            background: "#f7f7f7",
-            minHeight: "calc(100vh - 60px)",
-            transition: "margin-left 0.3s, width 0.3s",
-          }}
-        >
-          {SECTIONS.map((section, idx) => {
-            const SectionComponent = section.Component;
-            return (
-              <SectionComponent
-                key={section.id}
-                ref={(el) => (sectionRefs.current[idx] = el)}
-              />
-            );
-          })}
+
+          <div
+            className="right-column"
+            style={{
+              marginLeft: isAvatarVisible ? "30vw" : 0,
+              width: isAvatarVisible ? "70vw" : "100vw",
+              padding: "2em",
+              minHeight: "calc(100vh - 60px)",
+              transition: "margin-left 0.4s, width 0.4s",
+            }}
+          >
+            {SECTIONS.map((section, idx) => {
+              const SectionComponent = section.Component;
+              return (
+                <SectionComponent
+                  key={section.id}
+                  ref={(el) => (sectionRefs.current[idx] = el)}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div ref={footprintRef} className="footprint-galactic-wrapper">
+           <div className="digital-footprint-container">
+                 <DigitalFootprint />
+          </div>
+        <div className="galactic-command-container">
+                 <GalacticCommand />
+        </div>
+        <div><ContactPanel/></div>
+        <footer>
+          <GalacticFooter/>
+        </footer> 
         </div>
       </div>
     </div>

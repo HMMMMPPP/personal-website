@@ -1,0 +1,161 @@
+/* src/components/GalacticFooter.css (Updated with Blend Effect) */
+
+:root {
+    --brand-color: #67e8f9;
+    --brand-color-dark: #22d3ee;
+    --text-color-light: #9ca3af;
+    --text-color-dark: #6b7280;
+    --status-color: #4ade80;
+    /* This color should match the footer's background to create the blend */
+    --bg-color: rgb(15 23 42 / 0.9); 
+    --border-color: rgb(100 220 255 / 0.2);
+}
+
+.galactic-footer {
+    /* FIX: Set position to relative to contain the ::before pseudo-element */
+    position: relative; 
+    background-color: var(--bg-color);
+    border-top: 2px solid var(--border-color);
+    color: white;
+    /* FIX: Removed the margin-top to eliminate the gray space */
+    /* margin-top: 5rem; */ 
+    font-family: 'Rajdhani', sans-serif;
+}
+
+/* NEW: This pseudo-element creates the blend effect */
+.galactic-footer::before {
+    content: '';
+    position: absolute;
+    /* Position it directly above the footer */
+    bottom: 100%; 
+    left: 0;
+    right: 0;
+    height: 120px; /* Adjust height of the fade as needed */
+    /* Creates a gradient from the footer color to transparent */
+    background: linear-gradient(to top, var(--bg-color), transparent);
+    /* Ensures this overlay doesn't interfere with mouse clicks */
+    pointer-events: none; 
+}
+
+
+.footer-container {
+    max-width: 90rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 3rem 1rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 1024px) {
+    .footer-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+.footer-column > *:not(:first-child) {
+    margin-top: 1.5rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.footer-logo-text .highlight {
+    color: var(--brand-color-dark);
+}
+
+.footer-description {
+    color: var(--text-color-light);
+    font-size: 0.875rem;
+}
+
+.social-links {
+    display: flex;
+}
+
+.social-links > *:not(:first-child) {
+    margin-left: 1.25rem;
+}
+
+.social-links a {
+    color: var(--text-color-light);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--brand-color);
+    transform: scale(1.1);
+}
+
+.footer-section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--brand-color-dark);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-list > *:not(:first-child) {
+    margin-top: 0.75rem;
+}
+
+.footer-link a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.footer-link a:hover {
+    color: var(--brand-color);
+    padding-left: 0.5rem;
+}
+
+.footer-link .arrow {
+    padding-right: 0.5rem;
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-color-dark);
+}
+
+.footer-bottom p:not(:first-child) {
+    margin-top: 0.5rem;
+}
+
+.footer-status {
+    color: var(--status-color);
+}
+.footer-status .status-icon {
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+}

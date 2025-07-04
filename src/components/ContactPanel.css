@@ -1,0 +1,293 @@
+/* --- Import Google Font --- */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* --- Main Container & Grid Layout --- */
+.contact-panel-container {
+    --primary-bg: #0A192F;
+    --secondary-bg: #112240;
+    --accent-color: #64FFDA;
+    --text-light: #CCD6F6;
+    --text-dark: #8892B0;
+    --border-color: rgba(100, 255, 218, 0.1);
+    --glow-color: rgba(100, 255, 218, 0.2);
+    --error-color: #FF5555;
+
+    font-family: 'Share Tech Mono', monospace;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 2rem;
+    width: 100%;
+    max-width: 1100px;
+}
+
+/* --- Responsive Grid for larger screens --- */
+@media (min-width: 992px) {
+    .contact-grid {
+        grid-template-columns: 1.2fr 1fr; /* Two columns on desktop */
+    }
+}
+
+/* --- General Panel Styling --- */
+.form-panel, .social-panel {
+    background-color: rgba(17, 34, 64, 0.75);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* MODIFICATION: Make the form panel a positioning context for the overlay */
+.form-panel {
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-title {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    position: relative;
+}
+
+.panel-title::before {
+    content: '// ';
+    color: var(--text-dark);
+}
+
+.panel-subtitle {
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin: 0 0 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+/* --- Contact Form Specifics --- */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input, .form-group textarea {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.8rem;
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    flex-grow: 1;
+}
+
+.form-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: var(--accent-color);
+    color: var(--primary-bg);
+}
+
+.submit-button:disabled {
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+    cursor: not-allowed;
+}
+
+/* --- Social Links Grid --- */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    flex-grow: 1;
+    grid-auto-rows: 1fr;
+}
+
+.social-link {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.social-link:hover {
+    transform: translateY(-5px);
+    background-color: var(--secondary-bg);
+    border-color: var(--accent-color);
+}
+
+.contact-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-dark);
+    transition: color 0.3s;
+}
+
+.social-link:hover .contact-icon {
+    color: var(--accent-color);
+}
+
+/* --- Location & Time Footer --- */
+.location-footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.location-info, .time-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.location-footer .contact-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* --- NEW: Status Overlay Styles --- */
+.status-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 25, 47, 0.85); /* --primary-bg with opacity */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 8px; /* Match panel border-radius */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 10;
+}
+
+.status-overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+.status-overlay-content p {
+    margin: 0;
+    max-width: 90%;
+}
+
+.status-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+/* Spinner for 'TRANSMITTING' */
+.status-icon.transmitting {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Checkmark for 'SUCCESS' */
+.status-icon.success {
+    color: var(--accent-color);
+    animation: pop-in 0.4s ease-out;
+}
+
+/* 'X' for 'FAILED' */
+.status-icon.failed {
+    color: var(--error-color);
+    animation: pop-in 0.4s ease-out;
+}
+
+@keyframes pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

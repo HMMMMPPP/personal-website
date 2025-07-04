@@ -1,0 +1,139 @@
+/* === THEME: "PROJECT KRONOS" (DEFINITIVE GALACTIC) === */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg-color: #030613;
+  --accent-blue: #00BFFF; /* Deep sky blue */
+  --glow-color: rgba(0, 191, 255, 0.5);
+  --text-primary: #EAEFF5;
+  --text-secondary: #7f8c8d;
+  --font-display: 'Orbitron', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+}
+
+.loadingScreen {
+  position: fixed; inset: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999; overflow: hidden;
+  transition: opacity 1.5s ease-out;
+}
+.fadeOut { opacity: 0; pointer-events: none; }
+
+/* === BACKGROUND & ATMOSPHERICS === */
+.starfield {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(1.5px 1.5px at 50% 50%, #aaccff, transparent),
+    radial-gradient(1px 1px at 10% 90%, #aaccff, transparent),
+    radial-gradient(1px 1px at 90% 70%, white, transparent);
+  background-size: 300px 300px;
+  animation: panStars 60s linear infinite;
+}
+.scanline {
+  position: absolute; top: -100%; left: 0; width: 100%; height: 2px;
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--glow-color);
+  animation: scan 8s linear infinite;
+}
+.vignette {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 25vw rgba(3, 6, 19, 0.9);
+}
+
+/* === MAIN CONTENT LAYOUT === */
+.content {
+  width: 100%; max-width: 1600px; height: 100%; max-height: 900px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 1fr 1fr;
+  padding: 2.5rem 3rem; position: relative;
+}
+
+/* === FLOATING DATA CLUSTERS === */
+.dataCluster {
+  font-size: 0.8rem; line-height: 1.6;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  border: 1px solid rgba(0, 191, 255, 0.2);
+  padding: 0.75rem 1rem;
+  background: rgba(3, 6, 19, 0.5);
+  backdrop-filter: blur(5px);
+}
+.dataCluster span { color: var(--accent-blue); }
+.topLeft { grid-column: 1 / 2; grid-row: 1 / 2; justify-self: start; }
+.topRight { grid-column: 2 / 3; grid-row: 1 / 2; justify-self: end; text-align: right; }
+
+/* === CENTERPIECE: 3D DATA SPHERE === */
+.centerpiece {
+  grid-column: 1 / -1; grid-row: 2 / 3;
+  display: grid; place-items: center;
+  perspective: 1200px;
+}
+.dataSphere {
+  width: 300px; height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotateSphere 25s linear infinite;
+}
+.core {
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: 6rem; color: var(--accent-blue);
+  text-shadow: 0 0 20px var(--glow-color);
+  background: radial-gradient(circle, rgba(0, 191, 255, 0.15) 0%, transparent 60%);
+}
+.ring {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--accent-blue);
+  box-shadow: 0 0 10px var(--glow-color) inset, 0 0 10px var(--glow-color);
+  opacity: 0.5;
+}
+.ring1 { transform: rotateY(70deg) rotateX(20deg); }
+.ring2 { transform: rotateY(-70deg) rotateX(-20deg); }
+.ring3 { transform: rotateX(90deg); opacity: 0.3; border-style: dashed; }
+
+/* === BOTTOM STATUS BAR === */
+.statusBar {
+  grid-column: 1 / -1; grid-row: 3 / 4;
+  align-self: end;
+  border-top: 1px solid rgba(0, 191, 255, 0.2);
+  padding-top: 1rem;
+}
+.statusText {
+  display: flex; align-items: center; gap: 0.75rem;
+  height: 1.5em; margin-bottom: 0.75rem;
+  font-size: 0.9rem; letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--accent-blue);
+  border-top-color: transparent; border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.progressBar {
+  width: 100%; height: 2px;
+  background: rgba(0, 191, 255, 0.1);
+}
+.progressFill {
+  width: 0%; height: 100%;
+  background: var(--accent-blue);
+  box-shadow: 0 0 10px var(--glow-color);
+  transition: width 0.1s linear;
+}
+
+/* === KEYFRAMES === */
+@keyframes panStars { to { background-position: 300px 300px; } }
+@keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+@keyframes rotateSphere { to { transform: rotateY(360deg) rotateX(360deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }

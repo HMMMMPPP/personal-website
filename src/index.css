@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Roboto+Mono:wght@400;700&display=swap');
+html {
+  scroll-behavior: smooth;
+}
 .container {
   display: flex; /* Enable Flexbox */
 
@@ -25,32 +29,26 @@ body {
   z-index: 0;
 }
 .right-column {
-  margin-left: 35vw;
+  /* This margin value will likely be controlled by JavaScript 
+     to handle the showing/hiding of the left avatar panel. */
+  margin-left: 35vw; 
+
   padding: 2em;
   flex: 1;
-  min-height: 200vh;
-  background: #f7f7f7;
+  min-height: 200vh; /* Or min-height: 100vh depending on layout needs */
+  
+  /* * CHANGE: The background is now set to the dark base color 
+   * of the spaceship theme, replacing the light #f7f7f7.
+   */
+  background: #050818; 
+
 }
 .avatar-canvas {
   width: 28vw !important;
   height: 80vh !important;
   background: #111;
   border-radius: 1em;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #1a1a1a;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
+}a
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
