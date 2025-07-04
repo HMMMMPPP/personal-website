@@ -1,11 +1,6 @@
 // functions/api-data.js
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
-
-// Retrieve these from Netlify Environment Variables
-// GOOGLE_SHEET_ID should be a string: '1Sh9kckAgO9nsLI9gLp2ViSX_vxQe14eJjvSMtPAdfRk'
-// GOOGLE_SERVICE_ACCOUNT_EMAIL should be the client_email from your JSON
-// GOOGLE_PRIVATE_KEY should be the private_key from your JSON (replace '\n' with actual newlines if needed, or better yet, store it directly with newlines in Netlify)
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
 const GOOGLE_SERVICE_ACCOUNT_EMAIL = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
 const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'); // Ensure newlines are correct
