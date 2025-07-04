@@ -1,12 +1,16 @@
+# Main build settings
 [build]
   command = "npm run build"
-  publish = "build" # Or "public", "dist" - wherever your frontend builds to
-  command = "npm run build
-  publish = "dist" # Or "public", "dist" - wherever your frontend builds to
-  functions = "netlify/functions" # The directory for your serverless functions
+  publish = "dist" # IMPORTANT: Set this to the actual output directory of your frontend build (e.g., 'build', 'public', 'dist')
 
+# Functions specific settings
+[functions]
+  directory = "netlify/functions" # This tells Netlify where to find your serverless functions
+
+# Redirects and Rewrites
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
-  force = true # This is important to ensure your frontend can hit /api/ routes
+  # force = true # You can remove this unless you have specific reasons for it.
+               # For proxying to functions, it's often not necessary.
