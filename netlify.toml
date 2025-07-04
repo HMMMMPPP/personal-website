@@ -1,0 +1,9 @@
+[build]
+  publish = "build" # Or "public", "dist" - wherever your frontend builds to
+  functions = "netlify/functions" # The directory for your serverless functions
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true # This is important to ensure your frontend can hit /api/ routes

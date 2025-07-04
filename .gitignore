@@ -1,5 +1,5 @@
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +7,35 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependency directories
+node_modules/
+/dist/             # For production builds (e.g., from Vue, React, Vite)
+/build/            # Common build directory (e.g., create-react-app)
+/out/              # Another common build directory
+/dist-ssr/         # For SSR-specific builds, as you had
+/coverage/         # Test coverage reports
+
+# Environment variables
+.env               # General .env file
+.env.local         # Specific to local development
+.env.*.local       # e.g., .env.development.local, .env.production.local
+
+# Google Service Account Credentials (YOUR ADDITION)
+google-credentials.json
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+.vscode/           # VS Code directory (ignore everything inside)
+!.vscode/extensions.json # EXCEPT this file if you want to share recommended extensions
+.idea/             # IntelliJ/WebStorm IDE files
+.DS_Store          # macOS specific file
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.bak              # Backup files
+*.swo              # Vim swap files
+*.swp              # Vim swap files
+
+# Netlify specific (optional, depending on your setup)
+.netlify/          # Local Netlify Dev cache/config
