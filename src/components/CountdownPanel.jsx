@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'; // Removed useRef, useCallback
 import './CountdownPanel.css';
 
 // The API endpoint for your server
@@ -8,7 +8,6 @@ const TARGET_DATE = new Date('2026-06-07T00:00:00Z');
 // Helper function to format currency
 const formatCurrency = (amount) => new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(amount);
 
-// --- Component for the Planetary Contributor Design ---
 // --- Component for the Planetary Contributor Design ---
 const PlanetaryContributors = ({ contributors }) => {
     // Return null if there's no data yet
@@ -65,37 +64,7 @@ const PlanetaryContributors = ({ contributors }) => {
     );
 };
 
-
-const Starfield = () => {
-    const stars = useMemo(() => {
-        return Array.from({ length: 120 }).map((_, i) => ({
-            id: i,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            size: `${1 + Math.random() * 2}px`,
-            delay: `${Math.random() * 6}s`,
-            duration: `${2 + Math.random() * 3}s`,
-        }));
-    }, []);
-    return (
-        <div id="CountdownPanel"className="starfield">
-            {stars.map(star => (
-                <div
-                    key={star.id}
-                    className="star"
-                    style={{
-                        left: star.left,
-                        top: star.top,
-                        width: star.size,
-                        height: star.size,
-                        animationDelay: star.delay,
-                        animationDuration: star.duration,
-                    }}
-                />
-            ))}
-        </div>
-    );
-};
+// Removed StarfieldCanvas component entirely
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -127,34 +96,29 @@ export default function CountdownPanel() {
     const [timeLeft, setTimeLeft] = useState(() => getTimeLeft(TARGET_DATE));
     const [isComplete, setIsComplete] = useState(false);
     
-    // State to hold the top contributors list
     const [topContributors, setTopContributors] = useState([]);
 
-    // useEffect to fetch data from your server
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(API_URL);
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 
-                // --- CORRECTED: Use `topContributors` from the server ---
-                // The server provides the top 5, but our display uses the top 3.
-                // We use .slice(0, 3) to safely get only the top 3 for the planets.
                 if (data && data.topContributors) {
                     setTopContributors(data.topContributors.slice(0, 3));
                 }
             } catch (error) {
                 console.error("Failed to fetch contributor data:", error);
+                setTopContributors([]); 
             }
         };
 
         fetchData();
-    }, []); // The empty array ensures this runs only once when the component mounts
+    }, []);
 
-    // This useEffect for the timer remains unchanged
     useEffect(() => {
         const interval = setInterval(() => {
             const tl = getTimeLeft(TARGET_DATE);
@@ -173,9 +137,9 @@ export default function CountdownPanel() {
     }, []);
 
     return (
-        <div className="countdown-root">
-            <Starfield />
-            {/* Render the PlanetaryContributors component */}
+        // The .countdown-root now directly handles the background
+        <div className="countdown-root"> 
+            {/* Removed <StarfieldCanvas /> */}
             <PlanetaryContributors contributors={topContributors} />
             <div className="countdown-content">
                 <h1 className="vanguard-title">PROJECT NORTH-STAR</h1>
@@ -197,11 +161,11 @@ export default function CountdownPanel() {
                 ) : (
                     <>
                         <div className="mission-complete-message">
-                            {/* ... Mission Complete JSX ... */}
+                            Mission Complete! Journey Onward!
                         </div>
                         <hr className="countdown-divider"/>
                         <div className="countdown-footer">
-                           {/* ... Mission Complete Footer JSX ... */}
+                            Thank you for your support on Project North-Star.
                         </div>
                     </>
                 )}
