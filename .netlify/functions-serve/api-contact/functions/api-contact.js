@@ -4928,7 +4928,7 @@ var require_lib2 = __commonJS({
 // functions/api-contact.js
 var { Pool } = require_lib2();
 var getManilaTime = () => (/* @__PURE__ */ new Date()).toLocaleString("en-PH", { timeZone: "Asia/Manila" });
-var NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+var NEON_DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
 console.log(`[${getManilaTime()}] --- DEBUG LOG: Function api-data invoked ---`);
 console.log(`[${getManilaTime()}] DEBUG LOG: NEON_DATABASE_URL defined (local):`, !!NEON_DATABASE_URL);
 if (!NEON_DATABASE_URL) {

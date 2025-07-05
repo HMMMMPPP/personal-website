@@ -4927,7 +4927,7 @@ var require_lib2 = __commonJS({
 
 // functions/api-suggestions.js
 var { Pool } = require_lib2();
-var NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+var NEON_DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
 var pool = new Pool({
   connectionString: NEON_DATABASE_URL,
   ssl: { rejectUnauthorized: true }

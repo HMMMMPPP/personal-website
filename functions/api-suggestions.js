@@ -1,7 +1,7 @@
 // functions/api-suggestions.js
 const { Pool } = require('pg');
 
-const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+const NEON_DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
 
 const pool = new Pool({
     connectionString: NEON_DATABASE_URL,

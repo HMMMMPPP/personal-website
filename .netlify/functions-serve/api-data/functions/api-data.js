@@ -4927,7 +4927,7 @@ var require_lib2 = __commonJS({
 
 // functions/api-data.js
 var { Pool } = require_lib2();
-var NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+var NEON_DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
 var getManilaTime = () => (/* @__PURE__ */ new Date()).toLocaleString("en-PH", { timeZone: "Asia/Manila" });
 console.log(`[${getManilaTime()}] --- Netlify Function Invoked: api-data ---`);
 console.log(`[${getManilaTime()}] NEON_DATABASE_URL defined:`, !!NEON_DATABASE_URL);

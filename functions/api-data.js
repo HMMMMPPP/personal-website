@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 // IMPORTANT: This NEON_DATABASE_URL will be provided by Netlify's environment variables
 // in production, and from your local .env file when using 'netlify dev'.
-const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+const NEON_DATABASE_URL = process.env.NETLIFY_DATABASE_URL;
 
 // --- ADDED LOGGING FOR DEBUGGING NEON_DATABASE_URL ---
 // Using the correct timezone for logging
