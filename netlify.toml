@@ -1,14 +1,15 @@
 # netlify.toml
 [build]
-  command = "npm run build" # Or whatever command builds your frontend
-  publish = "dist"          # Or whatever directory your built frontend goes into
+  command = "npm run build" # Your React build command
+  publish = "dist"          # The directory where your built React app is output (e.g., build, dist)
 
-[functions]
-  directory = "functions"   # This tells Netlify where to find your functions
-  node_bundler = "esbuild"  # Recommended for faster builds and smaller function sizes
+# Remove or comment out the [functions] section for now if you're not using them yet.
+# [functions]
+#   directory = "functions"
+#   node_bundler = "esbuild"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "http://localhost:3001/api/:splat" # <-- This is the crucial change
   status = 200
-  force = true # Ensures this redirect takes precedence
+  force = true # Ensures this rule is applied even if a file exists at the path

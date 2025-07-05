@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './CountdownPanel.css';
 
 // The API endpoint for your server
-const API_URL = 'http://localhost:3001/api/data';
+const API_URL = '/api/data';
 const TARGET_DATE = new Date('2026-06-07T00:00:00Z');
 
 // Helper function to format currency

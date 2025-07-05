@@ -31,13 +31,12 @@
     "@tailwindcss/vite": "^4.1.10",
     "framer-motion": "^12.19.1",
     "lucide-react": "^0.523.0",
+    "pg": "^8.16.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-window": "^1.8.11",
+    "serverless-http": "^3.2.0",
     "three": "^0.178.0",
-    "tone": "^15.1.22",
-    
-    "google-spreadsheet": "^4.1.1",     
-    "google-auth-library": "^9.11.0"  
+    "tone": "^15.1.22"
   }
 }

@@ -250,7 +250,7 @@ const SuggestionModal = ({ isOpen, onClose, fetchData, onSuccess }) => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:3001/api/suggestions', {
+            const response = await fetch('/api/suggestions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
