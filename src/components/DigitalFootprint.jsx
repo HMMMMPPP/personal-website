@@ -231,20 +231,6 @@ const TopSupportersPanel = ({ supporters, title }) => {
               {formatCurrency(supporter.amount)}
             </span>
           </div>
-          {supporter.message && (
-            <div
-              style={{
-                marginTop: '0.5rem',
-                fontSize: '0.8rem',
-                fontStyle: 'italic',
-                color: '#ffd700',
-                textShadow: '0 0 5px #ffd700',
-                opacity: 0.9,
-              }}
-            >
-              {supporter.message}
-            </div>
-          )}
         </div>
       ))}
     </div>
