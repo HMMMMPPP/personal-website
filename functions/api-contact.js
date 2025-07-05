@@ -1,8 +1,19 @@
-// functions/api-contact.js
+// functions/api-data.js
 const { Pool } = require('pg');
 
+// Get current time in Manila
+const getManilaTime = () => new Date().toLocaleString('en-PH', {timeZone: 'Asia/Manila'});
+
+// Get the database URL
 const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
 
+console.log(`[${getManilaTime()}] --- DEBUG LOG: Function api-data invoked ---`);
+console.log(`[${getManilaTime()}] DEBUG LOG: NEON_DATABASE_URL defined (local):`, !!NEON_DATABASE_URL);
+if (!NEON_DATABASE_URL) {
+    console.error(`[${getManilaTime()}] DEBUG LOG ERROR: NEON_DATABASE_URL is ABSENT!`);
+}
+
+// Initialize Pool
 const pool = new Pool({
     connectionString: NEON_DATABASE_URL,
     ssl: { rejectUnauthorized: true }

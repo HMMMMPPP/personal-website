@@ -1,15 +1,14 @@
 # netlify.toml
 [build]
-  command = "npm run build" # Your React build command
-  publish = "dist"          # The directory where your built React app is output (e.g., build, dist)
+  command = "npm run build"
+  publish = "dist"
 
-# Remove or comment out the [functions] section for now if you're not using them yet.
-# [functions]
-#   directory = "functions"
-#   node_bundler = "esbuild"
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/api/*"
-  to = "http://localhost:3001/api/:splat" # <-- This is the crucial change
+  from = "/api/:name"
+  to = "/.netlify/functions/api-:name"
   status = 200
-  force = true # Ensures this rule is applied even if a file exists at the path
+  force = true
